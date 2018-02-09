@@ -18,7 +18,7 @@ import (
 type RPCRequest struct {
 	JSONRPC string      `json:"jsonrpc"`
 	Method  string      `json:"method"`
-	Params  interface{} `json:"params,omitempty"`
+	Params  interface{} `json:"params"`
 	ID      uint        `json:"id"`
 }
 
@@ -137,9 +137,7 @@ func (client *RPCClient) NewRPCNotificationObject(method string, params ...inter
 func (client *RPCClient) Call(method string, params ...interface{}) (*RPCResponse, error) {
 	// Ensure that params are nil and will be omitted from JSON if not specified.
 	var p interface{}
-	if len(params) != 0 {
-		p = params
-	}
+	p = params
 	httpRequest, err := client.newRequest(false, method, p)
 	if err != nil {
 		return nil, err
